@@ -97,7 +97,7 @@ public class ClassLoaderFactory {
         return (ClassLoader)this.loaderMap.get(loaderKey);
     }
 
-    public void reload(String key){
+    public void remove(String key){
         if(loaderMap.containsKey(key)){
             synchronized(this.loaderMap) {
                 loaderMap.remove(key);
@@ -105,7 +105,7 @@ public class ClassLoaderFactory {
             }
         }
     }
-    public void reloadAll() {
+    public void removeAll() {
         synchronized (this.loaderMap) {
             loaderMap.clear();
             logger.info("Wrapper classes for all key were removed!");

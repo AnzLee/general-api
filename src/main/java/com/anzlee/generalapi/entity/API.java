@@ -63,19 +63,27 @@ public class API {
      */
     private String apiUrl;
     /**
+     * API类型
+     */
+    private Type apiType;
+    /**
      * API请求方法
      */
     private Method apiMethod = Method.get;
     /**
      * 数据库
      */
-    @OneToOne(cascade = {CascadeType.ALL},fetch = FetchType.LAZY,optional=false)
+    @OneToOne(cascade = {CascadeType.ALL},fetch = FetchType.EAGER,optional=false)
     @JoinColumn(name="database_id")
     private Database apiDatabase;
     /**
      * 内容
      */
     private String apiContent;
+    /**
+     * 动态嵌入代码
+     */
+    private String apiCode;
     /**
      * 格式
      */
@@ -152,6 +160,20 @@ public class API {
     }
 
     /**
+     * @return the apiType
+     */
+    public Type getApiType() {
+        return apiType;
+    }
+
+    /**
+     * @param $paramName the apiType to set
+     */
+    public void setApiType(Type apiType) {
+        this.apiType = apiType;
+    }
+
+    /**
      * @return the apiMethod
      */
     public Method getApiMethod() {
@@ -191,6 +213,20 @@ public class API {
      */
     public void setApiContent(String apiContent) {
         this.apiContent = apiContent;
+    }
+
+    /**
+     * @return the apiCode
+     */
+    public String getApiCode() {
+        return apiCode;
+    }
+
+    /**
+     * @param $paramName the apiCode to set
+     */
+    public void setApiCode(String apiCode) {
+        this.apiCode = apiCode;
     }
 
     /**

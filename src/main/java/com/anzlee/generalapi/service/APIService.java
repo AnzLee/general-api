@@ -7,9 +7,18 @@
 package com.anzlee.generalapi.service;
 
 import com.anzlee.generalapi.entity.API;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface APIService {
-    API findById(int id);
+
+    API findById(Long id);
+
     API findByName(String name);
+
     API save(API api);
+
+    Page<API> apiView(Pageable pageable);
+
+    String apiView(Integer page, Integer limit);
 }

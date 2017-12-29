@@ -39,7 +39,7 @@ public class SwaggerConfig {
                 .description("第三方接口 文档与测试")
                 .version("1.0.0")
                 .termsOfServiceUrl("/")
-                .license("返回主页")
+                .license("生成文档")
                 .licenseUrl("/")
                 .build();
     }

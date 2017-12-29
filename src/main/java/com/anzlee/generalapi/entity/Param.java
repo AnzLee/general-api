@@ -61,6 +61,14 @@ public class Param {
      */
     private EncryptType paramEncryptType;
     /**
+     * 过滤条件
+     */
+    private String paramFilter;
+    /**
+     * 排序条件
+     */
+    private String paramOrder;
+    /**
      * api
      */
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH},fetch = FetchType.LAZY)
@@ -177,6 +185,34 @@ public class Param {
      */
     public void setParamEncryptType(EncryptType paramEncryptType) {
         this.paramEncryptType = paramEncryptType;
+    }
+
+    /**
+     * @return the paramFilter
+     */
+    public String getParamFilter() {
+        return paramFilter;
+    }
+
+    /**
+     * @param $paramName the paramFilter to set
+     */
+    public void setParamFilter(String paramFilter) {
+        this.paramFilter = paramFilter;
+    }
+
+    /**
+     * @return the paramOrder
+     */
+    public String getParamOrder() {
+        return paramOrder;
+    }
+
+    /**
+     * @param $paramName the paramOrder to set
+     */
+    public void setParamOrder(String paramOrder) {
+        this.paramOrder = paramOrder;
     }
 
     /**

@@ -31,8 +31,21 @@ public class APIController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public String view(){
-        return "{\"abc\":123}";
+    public String view(Integer page, Integer limit){
+        if(page==null){
+            page = 1;
+        }
+        if(limit==null){
+            limit = 10;
+        }
+        return apiService.apiView(page, limit);
+    }
+
+    @RequestMapping(value = "/one",method = RequestMethod.GET)
+    @ResponseBody
+    public API viewById(Long id){
+        API api = apiService.findById(id);
+        return api;
     }
 
     @RequestMapping(method = RequestMethod.POST)
