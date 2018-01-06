@@ -7,18 +7,17 @@
 package com.anzlee.generalapi.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.anzlee.generalapi.entity.API;
+import com.anzlee.generalapi.entity.Task;
 import com.anzlee.generalapi.pojo.Message;
 import com.anzlee.generalapi.service.APIService;
+import com.anzlee.generalapi.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Controller
-@RequestMapping(value = "/api")
-public class APIController {
+@RequestMapping(value = "/task")
+public class TaskController {
 
     /** 错误消息 */
     protected static final Message ERROR_MESSAGE = Message.error("manager.message.error");
@@ -28,6 +27,9 @@ public class APIController {
 
     @Autowired
     APIService apiService;
+    @Autowired
+    TaskService taskService;
+
 
     /**
      * 获取所有API
@@ -35,18 +37,12 @@ public class APIController {
      */
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     @ResponseBody
-    public String getAllApi(){
+    public String getAllTask(){
         JSONObject json = new JSONObject();
-        json.fluentPut("api",apiService.findAllApi());
+        json.fluentPut("task",taskService.findAllTask());
         return json.toJSONString();
     }
 
-    /**
-     * 分页查询
-     * @param page
-     * @param limit
-     * @return
-     */
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public String view(Integer page, Integer limit){
@@ -56,30 +52,20 @@ public class APIController {
         if(limit==null){
             limit = 10;
         }
-        return apiService.apiView(page, limit);
+        return taskService.taskView(page, limit);
     }
 
-    /**
-     * ID查询
-     * @param id
-     * @return
-     */
     @RequestMapping(value = "/one",method = RequestMethod.GET)
     @ResponseBody
-    public API viewById(Long id){
-        API api = apiService.findById(id);
-        return api;
+    public Task viewById(Long id){
+        Task task = taskService.findById(id);
+        return task;
     }
 
-    /**
-     * 添加
-     * @param api
-     * @return
-     */
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public Message add(@ModelAttribute API api, @RequestParam(name = "task") Long task){
-        if(apiService.save(api, task)!=null){
+    public Message add(@ModelAttribute Task task){
+        if(taskService.save(task)!=null){
             return SUCCESS_MESSAGE;
         }else {
             return ERROR_MESSAGE;

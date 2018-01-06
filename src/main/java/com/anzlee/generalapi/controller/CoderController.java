@@ -1,5 +1,5 @@
 /**
- * API接口
+ * 动态代码测试接口
  *
  * @author li.liangzhe
  * @create 2017-12-04 17:34
@@ -10,11 +10,19 @@ import com.anzlee.generalapi.entity.API;
 import com.anzlee.generalapi.pojo.Message;
 import com.anzlee.generalapi.service.CoderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/coder")
@@ -22,6 +30,9 @@ public class CoderController {
 
     @Autowired
     CoderService coderService;
+
+    @Autowired
+    ApplicationContext context;
 
     /** 错误消息 */
     protected static final Message ERROR_MESSAGE = Message.error("manager.message.error");
@@ -38,6 +49,13 @@ public class CoderController {
             }
         }
         return ERROR_MESSAGE;
+    }
+
+    @RequestMapping(value = "/load", method = RequestMethod.POST)
+    @ResponseBody
+    public String loadClass(){
+        coderService.loadClass();
+        return "success";
     }
 
 }

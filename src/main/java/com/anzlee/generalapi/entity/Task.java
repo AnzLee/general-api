@@ -6,19 +6,16 @@
  **/
 package com.anzlee.generalapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "gen_task")
+@JsonIgnoreProperties(value={"taskApi"})
 public class Task {
-    public enum Type{
-        /** 前置任务 */
-        BEFORE,
-        /** 主任务 */
-        CENTRE,
-        /** 后置任务 */
-        AFTER
-    }
     /**
      * ID
      */
@@ -28,6 +25,7 @@ public class Task {
     /**
      * 任务名
      */
+    @Column(unique=true, nullable=false)
     private String taskName;
     /**
      * 任务描述
@@ -38,21 +36,10 @@ public class Task {
      */
     private String taskExTime;
     /**
-     * 任务类型
-     */
-    private Type taskType = Type.CENTRE;
-    /**
      * 任务API
      */
-    @OneToOne(targetEntity = API.class)
-    @JoinColumn(name = "api_id",referencedColumnName = "id")
-    private API taskApi;
-    /**
-     * 关联任务
-     */
-    @OneToOne(targetEntity = Task.class)
-    @JoinColumn(name = "task_id",referencedColumnName = "id")
-    private Task linkTask;
+    @OneToMany(targetEntity=API.class,mappedBy = "apiTask",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+    private List<API> taskApi = new ArrayList<API>();
 
     /**
      * @return the ID
@@ -111,44 +98,16 @@ public class Task {
     }
 
     /**
-     * @return the taskType
-     */
-    public Type getTaskType() {
-        return taskType;
-    }
-
-    /**
-     * @param $paramName the taskType to set
-     */
-    public void setTaskType(Type taskType) {
-        this.taskType = taskType;
-    }
-
-    /**
      * @return the taskApi
      */
-    public API getTaskApi() {
+    public List<API> getTaskApi() {
         return taskApi;
     }
 
     /**
      * @param $paramName the taskApi to set
      */
-    public void setTaskApi(API taskApi) {
+    public void setTaskApi(List<API> taskApi) {
         this.taskApi = taskApi;
-    }
-
-    /**
-     * @return the linkTask
-     */
-    public Task getLinkTask() {
-        return linkTask;
-    }
-
-    /**
-     * @param $paramName the linkTask to set
-     */
-    public void setLinkTask(Task linkTask) {
-        this.linkTask = linkTask;
     }
 }

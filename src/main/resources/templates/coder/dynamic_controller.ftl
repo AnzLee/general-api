@@ -18,23 +18,26 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping(value = "${apiName}")
 public class _${apiName}Controller{
+    /**
+     * 描述：接口方法
+     *
+     <#list apiParams as apiParam>
+     * @param ${apiParam.paramName}  ${apiParam.paramValue}
+     </#list>
+     */
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    @ApiImplicitParams({
+    <#list apiParams as apiParam>
+    @ApiImplicitParam(name="${apiParam.paramName}",value="${apiParam.paramValue}",dataType="${apiParam.paramType}", paramType = "query"),
+    </#list>
+    })
+    public String CommonMethod(String id)throws Exception{
 
-/**
-* 描述：接口方法
-*
-<#list apiParams as apiParam>
-* @param ${apiParam.paramName}  ${apiParam.paramValue}
-</#list>
-*/
-@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-@ResponseBody
-@ApiImplicitParams({
-<#list apiParams as apiParam>
-@ApiImplicitParam(name="${apiParam.paramName}",value="${apiParam.paramValue}",dataType="${apiParam.paramType}", paramType = "query"),
-</#list>
-})
-public String CommonMethod(String id)throws Exception{
+        return id;
+    }
 
-return id;
-}
+    public void validate(){
+        System.out.println("_${apiName}Controller has been Loaded");
+    }
 }

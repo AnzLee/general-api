@@ -6,10 +6,12 @@
  **/
 package com.anzlee.generalapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 
 import javax.persistence.*;
 import java.util.List;
+
 @Entity
 @Table(name = "gen_api")
 @ApiModel(value="API对象",description="接口对象api")
@@ -53,19 +55,20 @@ public class API {
     /**
      * 名字
      */
+    @Column(unique=true, nullable=false)
     private String apiName;
     /**
      * 协议
      */
     private Protocol apiProtocol = Protocol.http;
     /**
+     * 类型
+     */
+    private Type apiType;
+    /**
      * 地址
      */
     private String apiUrl;
-    /**
-     * API类型
-     */
-    private Type apiType;
     /**
      * API请求方法
      */
@@ -102,6 +105,12 @@ public class API {
      */
     @OneToMany(targetEntity=Response.class,mappedBy="responseApi",fetch=FetchType.LAZY)
     private List<Response> apiResponses;
+    /**
+     * 所属任务
+     */
+    @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},optional=false)
+    @JoinColumn(name = "task_id")
+    private Task apiTask;
 
     /**
      * @return the ID
@@ -146,20 +155,6 @@ public class API {
     }
 
     /**
-     * @return the apiUrl
-     */
-    public String getApiUrl() {
-        return apiUrl;
-    }
-
-    /**
-     * @param $paramName the apiUrl to set
-     */
-    public void setApiUrl(String apiUrl) {
-        this.apiUrl = apiUrl;
-    }
-
-    /**
      * @return the apiType
      */
     public Type getApiType() {
@@ -171,6 +166,20 @@ public class API {
      */
     public void setApiType(Type apiType) {
         this.apiType = apiType;
+    }
+
+    /**
+     * @return the apiUrl
+     */
+    public String getApiUrl() {
+        return apiUrl;
+    }
+
+    /**
+     * @param $paramName the apiUrl to set
+     */
+    public void setApiUrl(String apiUrl) {
+        this.apiUrl = apiUrl;
     }
 
     /**
@@ -283,5 +292,19 @@ public class API {
      */
     public void setApiResponses(List<Response> apiResponses) {
         this.apiResponses = apiResponses;
+    }
+
+    /**
+     * @return the apiTask
+     */
+    public Task getApiTask() {
+        return apiTask;
+    }
+
+    /**
+     * @param $paramName the apiTask to set
+     */
+    public void setApiTask(Task apiTask) {
+        this.apiTask = apiTask;
     }
 }

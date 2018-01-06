@@ -6,14 +6,12 @@
  **/
 package com.anzlee.generalapi.controller;
 
+import com.anzlee.generalapi.coder.loader.FileClassLoader;
 import com.anzlee.generalapi.entity.User;
 import com.anzlee.generalapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,5 +30,14 @@ public class TestController {
     @ResponseBody
     public boolean show(String sysName, String key, String subSectionId){
         return true;
+    }
+
+    @RequestMapping(value = "/third/{className}")
+    @ResponseBody
+    public String handler(@PathVariable("className")String className){
+        String wholeClassName = "com.anzlee.generalapi.third._"+className+"Controller";
+        String methodName = "validate";
+        FileClassLoader.loadClassAndInvokeMethod(wholeClassName, methodName, null);
+        return wholeClassName;
     }
 }

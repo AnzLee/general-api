@@ -7,8 +7,11 @@
 package com.anzlee.generalapi.service;
 
 import com.anzlee.generalapi.entity.API;
+import com.anzlee.generalapi.entity.Task;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 public interface APIService {
 
@@ -16,9 +19,12 @@ public interface APIService {
 
     API findByName(String name);
 
-    API save(API api);
+    API save(API api, Long task);
 
     Page<API> apiView(Pageable pageable);
 
     String apiView(Integer page, Integer limit);
+
+    List<API> findAllApi();
+
 }
