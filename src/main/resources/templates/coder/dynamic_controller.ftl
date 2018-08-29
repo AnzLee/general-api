@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
 * 描述：${apiName}控制层
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping(value = "${apiName}")
 public class _${apiName}Controller{
+
     /**
      * 描述：接口方法
      *
@@ -32,9 +34,9 @@ public class _${apiName}Controller{
     @ApiImplicitParam(name="${apiParam.paramName}",value="${apiParam.paramValue}",dataType="${apiParam.paramType}", paramType = "query"),
     </#list>
     })
-    public String CommonMethod(String id)throws Exception{
-
-        return id;
+    public String CommonMethod(@RequestParam("param") String param)throws Exception{
+        System.out.println("_${apiName}Controller is running");
+        return param;
     }
 
     public void validate(){

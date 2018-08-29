@@ -6,7 +6,6 @@
  **/
 package com.anzlee.generalapi.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 
 import javax.persistence.*;
@@ -25,6 +24,7 @@ public class API {
     public enum Format{
         json,
         xml,
+        protobuf,
         file,
         def
     }
@@ -40,12 +40,6 @@ public class API {
         GB18030,
         ASCII
     }
-    public enum Type{
-        /** 推送 */
-        PUSH,
-        /** 接收 */
-        PULL
-    }
     /**
      * ID
      */
@@ -58,13 +52,13 @@ public class API {
     @Column(unique=true, nullable=false)
     private String apiName;
     /**
+     * 描述
+     */
+    private String apiDescription;
+    /**
      * 协议
      */
     private Protocol apiProtocol = Protocol.http;
-    /**
-     * 类型
-     */
-    private Type apiType;
     /**
      * 地址
      */
@@ -76,9 +70,8 @@ public class API {
     /**
      * 数据库
      */
-    @OneToOne(cascade = {CascadeType.ALL},fetch = FetchType.EAGER,optional=false)
-    @JoinColumn(name="database_id")
-    private Database apiDatabase;
+    @OneToMany(targetEntity=Database.class,mappedBy="databaseApi",fetch=FetchType.LAZY)
+    private List<Database> apiDatabase;
     /**
      * 内容
      */
@@ -141,6 +134,20 @@ public class API {
     }
 
     /**
+     * @return the apiDescription
+     */
+    public String getApiDescription() {
+        return apiDescription;
+    }
+
+    /**
+     * @param $paramName the apiDescription to set
+     */
+    public void setApiDescription(String apiDescription) {
+        this.apiDescription = apiDescription;
+    }
+
+    /**
      * @return the apiProtocol
      */
     public Protocol getApiProtocol() {
@@ -152,20 +159,6 @@ public class API {
      */
     public void setApiProtocol(Protocol apiProtocol) {
         this.apiProtocol = apiProtocol;
-    }
-
-    /**
-     * @return the apiType
-     */
-    public Type getApiType() {
-        return apiType;
-    }
-
-    /**
-     * @param $paramName the apiType to set
-     */
-    public void setApiType(Type apiType) {
-        this.apiType = apiType;
     }
 
     /**
@@ -199,14 +192,14 @@ public class API {
     /**
      * @return the apiDatabase
      */
-    public Database getApiDatabase() {
+    public List<Database> getApiDatabase() {
         return apiDatabase;
     }
 
     /**
      * @param $paramName the apiDatabase to set
      */
-    public void setApiDatabase(Database apiDatabase) {
+    public void setApiDatabase(List<Database> apiDatabase) {
         this.apiDatabase = apiDatabase;
     }
 

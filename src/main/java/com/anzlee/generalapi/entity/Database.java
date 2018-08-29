@@ -6,8 +6,6 @@
  **/
 package com.anzlee.generalapi.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 
 @Entity
@@ -86,8 +84,8 @@ public class Database {
     /**
      * api
      */
-    @OneToOne(mappedBy="apiDatabase")
-    @JsonIgnore
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH},fetch = FetchType.LAZY)
+    @JoinColumn(name="api_id")
     private API databaseApi;
 
     /**

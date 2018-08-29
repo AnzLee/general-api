@@ -8,7 +8,9 @@ package com.anzlee.generalapi.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.anzlee.generalapi.dao.APIRepositoty;
+import com.anzlee.generalapi.dao.DatabaseRepositoty;
 import com.anzlee.generalapi.entity.API;
+import com.anzlee.generalapi.entity.Database;
 import com.anzlee.generalapi.entity.Task;
 import com.anzlee.generalapi.service.APIService;
 import com.anzlee.generalapi.service.TaskService;
@@ -18,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +30,9 @@ public class APIServiceImpl implements APIService {
 
     @Autowired
     APIRepositoty apiRepositoty;
+
+    @Autowired
+    DatabaseRepositoty databaseRepositoty;
 
     @Autowired
     TaskService taskService;
@@ -42,11 +48,16 @@ public class APIServiceImpl implements APIService {
     }
 
     @Override
+    @Transactional
     public API save(API api, Long task) {
         Task apiTask = taskService.findById(task);
         api.setApiTask(apiTask);
-        api.getApiDatabase().setDataPassword(
-                EncryptUtils.encode(api.getApiDatabase().getDataPassword()));
+        for(Database database : api.getApiDatabase()){
+            database.setDataPassword(
+                    EncryptUtils.encode(database.getDataPassword()));
+            database.setDatabaseApi(api);
+        }
+        databaseRepositoty.save(api.getApiDatabase());
         return apiRepositoty.save(api);
     }
 

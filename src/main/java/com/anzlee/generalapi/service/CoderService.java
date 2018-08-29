@@ -15,7 +15,8 @@ import java.util.Map;
 public interface CoderService {
 
     boolean genByAPIID(Long apiID);
+
     boolean compiler();
 
-    void loadClass();
+    void loadClass(String apiName);
 }

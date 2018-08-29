@@ -17,7 +17,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -29,7 +28,6 @@ import javax.tools.JavaFileObject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 @Service
@@ -82,10 +80,10 @@ public class CoderServiceImpl implements CoderService {
     }
 
     @Override
-    public void loadClass(){
-        String className = "com.anzlee.generalapi.third._documentController";
+    public void loadClass(String apiName){
+        String wholeName = "com.anzlee.generalapi.third._"+apiName+"Controller";
         String methodName = "validate";
-        FileClassLoader.loadClassAndInvokeMethod(className, methodName, null);
+        FileClassLoader.loadClassAndInvokeMethod(wholeName, methodName, null);
     }
 
     /**

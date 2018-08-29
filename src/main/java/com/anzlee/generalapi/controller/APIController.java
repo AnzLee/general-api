@@ -78,8 +78,8 @@ public class APIController {
      */
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public Message add(@ModelAttribute API api, @RequestParam(name = "task") Long task){
-        if(apiService.save(api, task)!=null){
+    public Message add(@ModelAttribute API api, @RequestParam(name = "task") Long taskId){
+        if(apiService.save(api, taskId)!=null){
             return SUCCESS_MESSAGE;
         }else {
             return ERROR_MESSAGE;

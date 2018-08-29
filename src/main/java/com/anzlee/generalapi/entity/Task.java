@@ -10,12 +10,29 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "gen_task")
 @JsonIgnoreProperties(value={"taskApi"})
 public class Task {
+    public enum Type{
+        /** 推送 */
+        PUSH,
+        /** 接收 */
+        PULL
+    }
+    public enum Status{
+        /** 未启动 */
+        Stop,
+        /** 已启动 */
+        Started,
+        /** 上次执行失败 */
+        Failed,
+        /** 上次执行成功 */
+        Success
+    }
     /**
      * ID
      */
@@ -32,14 +49,26 @@ public class Task {
      */
     private String taskDescription;
     /**
+     * 类型
+     */
+    private Type taskType;
+    /**
      * 执行时间
      */
     private String taskExTime;
     /**
      * 任务API
      */
-    @OneToMany(targetEntity=API.class,mappedBy = "apiTask",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+    @OneToMany(targetEntity=API.class,mappedBy = "apiTask",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
     private List<API> taskApi = new ArrayList<API>();
+    /**
+     * 上次执行时间
+     */
+    private Date lastExTime;
+    /**
+     * 任务状态
+     */
+    private Status taskStatus = Status.Stop;
 
     /**
      * @return the ID
@@ -84,6 +113,20 @@ public class Task {
     }
 
     /**
+     * @return the taskType
+     */
+    public Type getTaskType() {
+        return taskType;
+    }
+
+    /**
+     * @param $paramName the taskType to set
+     */
+    public void setTaskType(Type taskType) {
+        this.taskType = taskType;
+    }
+
+    /**
      * @return the taskExTime
      */
     public String getTaskExTime() {
@@ -109,5 +152,33 @@ public class Task {
      */
     public void setTaskApi(List<API> taskApi) {
         this.taskApi = taskApi;
+    }
+
+    /**
+     * @return the lastExTime
+     */
+    public Date getLastExTime() {
+        return lastExTime;
+    }
+
+    /**
+     * @param $paramName the lastExTime to set
+     */
+    public void setLastExTime(Date lastExTime) {
+        this.lastExTime = lastExTime;
+    }
+
+    /**
+     * @return the taskStatus
+     */
+    public Status getTaskStatus() {
+        return taskStatus;
+    }
+
+    /**
+     * @param $paramName the taskStatus to set
+     */
+    public void setTaskStatus(Status taskStatus) {
+        this.taskStatus = taskStatus;
     }
 }

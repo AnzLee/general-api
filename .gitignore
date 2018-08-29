@@ -10,9 +10,10 @@ gen
 .gitignore
 .idea/inspectionProfiles/
 .idea/workspace.xml
-src/main/java/com/anzlee/generalapi/quartz/
 src/main/java/com/anzlee/generalapi/third/
 src/main/resources/templates/css/
 src/main/resources/templates/js/
 src/test/
 target/
+/src/main/resources/application.properties
+src/main/resources/webjars/

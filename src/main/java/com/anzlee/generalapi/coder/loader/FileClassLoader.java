@@ -27,7 +27,7 @@ public class FileClassLoader extends ClassLoader {
 
     public FileClassLoader(ClassLoader parent, String path) {
         super(parent);
-        this.parent = parent; // 这样做其实是无用的
+        this.parent = parent;
         this.path = path;
     }
 
@@ -117,7 +117,7 @@ public class FileClassLoader extends ClassLoader {
         return baos.toByteArray();
     }
 
-    public static void loadClassAndInvokeMethod(String className, String methodName, Class<?>... methodParam){
+    public static boolean loadClassAndInvokeMethod(String className, String methodName, Object[] methodParamValues, Class<?>... methodParams){
         logger.info("java.ext.dirs :\n" + System.getProperty(ext));
         logger.info("java.class.path :\n" + System.getProperty(cp));
         ClassLoader currentClassloader = FileClassLoader.class.getClassLoader();
@@ -128,12 +128,14 @@ public class FileClassLoader extends ClassLoader {
             Class<?> loadClass = cl.loadClass(className);
             Object object = loadClass.newInstance();
             logger.info(" invoke some method !");
-            if(methodParam!=null){
-                Method method = loadClass.getMethod(methodName,methodParam);
-                method.invoke(object,"1");
+            if(methodParams!=null){
+                Method method = loadClass.getMethod(methodName,methodParams);
+                method.invoke(object,methodParamValues);
+                return true;
             } else {
                 Method method = loadClass.getMethod(methodName);
                 method.invoke(object);
+                return true;
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -150,5 +152,6 @@ public class FileClassLoader extends ClassLoader {
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
+        return false;
     }
 }
